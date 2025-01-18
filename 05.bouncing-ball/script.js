@@ -60,7 +60,14 @@ class Ball {
       this.dy += gravity;
     }
 
+    setTimeout(() => {
+      if (this.radius > 0) {
+        this.radius -= 1;
+      }
+    }, 2000);
+
     this.y += this.dy;
+
     this.draw();
   }
 }
