@@ -11,11 +11,19 @@ let cursorArea = 60;
 const mouse = {
   x: undefined,
   y: undefined,
+  clicked: false,
 };
 
 window.addEventListener("mousemove", (event) => {
   mouse.x = event.x;
   mouse.y = event.y;
+});
+
+window.addEventListener("mousedown", () => {
+  mouse.clicked = true;
+});
+window.addEventListener("mouseup", () => {
+  mouse.clicked = false;
 });
 
 window.addEventListener("resize", () => {
@@ -67,6 +75,17 @@ class Circle {
       this.radius -= 1;
     }
 
+    if (
+      mouse.x - this.x < cursorArea &&
+      mouse.x - this.x > -cursorArea &&
+      mouse.y - this.y < cursorArea &&
+      mouse.y - this.y > -cursorArea
+    ) {
+      if (mouse.clicked) {
+        this.radius = this.minRadius;
+      }
+    }
+
     this.draw();
   }
 }
@@ -107,6 +126,11 @@ function init() {
 function animate() {
   requestAnimationFrame(animate);
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+  //   if (mouse.clicked) {
+  //     const circleBigger = new Circle(mouse.x, mouse.y, 0, 0, 100, "white");
+  //     circleBigger.draw();
+  //   }
 
   for (let circle of circleArray) {
     circle.update();
